@@ -1,14 +1,15 @@
-import { Injectable, Logger, HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
+import { Category } from '../categories/category.entity';
 import { Product } from './product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { lastValueFrom } from 'rxjs';
 
 
-
+// Interface for object that's expected from TheMealDB API
 interface APIProduct {
     idMeal: string;
     strMeal: string;
@@ -22,41 +23,63 @@ export class ProductsService {
         private httpService: HttpService,
         @InjectRepository(Product)
         private productRepository: Repository<Product>,
+        @InjectRepository(Category)
+        private categoryRepository: Repository<Category>
     ) { }
 
-    findAll(): Observable<any[]> {
-        return this.httpService.get('https://www.themealdb.com/api/json/v1/1/products.php')
-            .pipe(
-                map(response => {
-                    console.log(response.data);
-                    return response.data.products
-                })
-            );
+    // Get products by category
+    async getProductsByCategory(categoryName: string): Promise<Product[]> {
+        try {
+            const category = await this.categoryRepository.findOne({
+                where: { categoryName },
+            });
+    
+            if (!category) {
+                throw new HttpException(`Category with the name '${categoryName}' does not exist.`, HttpStatus.NOT_FOUND);
+            }
+    
+            return await this.productRepository.find({
+                where: { category },
+            });
+        } catch (error) {
+            if (error instanceof HttpException) {
+                throw error;
+            }
+    
+            // Log the error and throw a more generic internal server error
+            this.logger.error(`Failed to get products for category '${categoryName}': ${error.message}`, error.stack);
+            throw new HttpException('Failed to get products for the specified category.', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    private categoryPricing = {
-        Lamb: 50,
-        Beef: 45,
-        Pork: 30,
-    };
 
-    private assignPricesToProducts(products: any[]): any[] {
-        return products.map(product => {
 
-            const basePrice = this.categoryPricing[product.product] || this.generateRandomPrice();
-            product.price = basePrice;
-            return product;
-        });
+    private assignPriceToProduct(category: string): number {
+        const priceRanges = {
+            Pork: { min: 20, max: 30 },
+            Beef: { min: 31, max: 60 },
+            Lamb: { min: 61, max: 100 }
+        };
+
+        // Determine the price range for the category or default to a generic range if not found
+        const categoryPriceRange = priceRanges[category] || { min: 10, max: 100 };
+
+        // Generate a random price within the selected range
+        const price = this.generateRandomPrice(categoryPriceRange.min, categoryPriceRange.max);
+
+        return price;
     }
 
-    private generateRandomPrice(): number {
-        return Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+    private generateRandomPrice(base: number, limit: number): number {
+        return Math.floor(Math.random() * (limit - base + 1)) + base;
     }
 
     // Fetch products from the API and save them to the database
-    async fetchAndSaveProducts(url: string): Promise<Product[]> {
-        const productsData = await this.fetchProductsFromAPI(url);
-        const transformedProducts = this.transformAndValidateProducts(productsData);
+    async fetchAndSaveProductsByCategory(category: Category): Promise<Product[]> {
+        const categoryUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${encodeURIComponent(category.categoryName)}`;
+
+        const productsData = await this.fetchProductsFromAPI(categoryUrl);
+        const transformedProducts = await this.transformAndValidateProducts(productsData, category);
         return this.saveProductsToDB(transformedProducts);
     }
 
@@ -76,29 +99,28 @@ export class ProductsService {
     }
 
     // Transform and validate the products fetched from the API
-    private transformAndValidateProducts(apiProducts: APIProduct[]): Product[] {
-        const validPoducts: Product[] = [];
+    private async transformAndValidateProducts(apiProducts: APIProduct[], category: Category): Promise<Product[]> {
+        const validProducts: Product[] = [];
 
         for (const apiProduct of apiProducts) {
             const isValidProduct = typeof apiProduct.idMeal === 'string' &&
                 typeof apiProduct.strMeal === 'string' &&
-                typeof apiProduct.strMealThumb === 'string'
-
+                typeof apiProduct.strMealThumb === 'string';
 
             if (isValidProduct) {
                 const product = new Product();
                 product.productName = apiProduct.strMeal.trim();
                 product.productThumbnail = apiProduct.strMealThumb.trim();
-                product.price = 0
+                product.price = this.assignPriceToProduct(category.categoryName);
+                product.categoryId = category.categoryId;
 
-
-                validPoducts.push(product)
+                validProducts.push(product);
             } else {
                 this.logger.warn(`Invalid product data encountered: ${JSON.stringify(apiProduct)}`);
             }
         }
 
-        return validPoducts;
+        return validProducts;
     }
 
     // Save products to the database
@@ -109,6 +131,7 @@ export class ProductsService {
 
         const savedProducts: Product[] = [];
 
+        // Log errors for each promise that was rejected
         results.forEach((result, index) => {
             if (result.status === 'fulfilled') {
                 savedProducts.push(result.value);

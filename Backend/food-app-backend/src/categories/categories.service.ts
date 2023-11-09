@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-
+// Interface for object that's expected from TheMealDB API
 interface APICategory {
     idCategory: string;
     strCategory: string;
@@ -16,34 +16,30 @@ interface APICategory {
 }
 
 @Injectable()
-export class CategoriesService implements OnModuleInit {
+export class CategoriesService {
     private readonly logger = new Logger(CategoriesService.name);
 
     constructor(
         private httpService: HttpService,
         @InjectRepository(Category)
         private categoryRepository: Repository<Category>,
+
+
     ) { }
 
-    async onModuleInit(): Promise<void> {
-        // Check if the database already has categories
-        const count = await this.categoryRepository.count();
-        if (count === 0) {
-            this.logger.log("Fetching and saving categories to the database.");
-            const url = "https://www.themealdb.com/api/json/v1/1/categories.php"
-            await this.fetchAndSaveCategories(url);
-        }
-    }
-
+    // Get all available categories
     async getAllCategories(): Promise<Category[]> {
         return await this.categoryRepository.find();
     }
 
+
     // Fetch categories from TheMealDB API and save them to the database
-    async fetchAndSaveCategories(url: string): Promise<Category[]> {
+    async fetchAndSaveCategories(): Promise<Category[]> {
+        const url = "https://www.themealdb.com/api/json/v1/1/categories.php"
         const apiCategoriesData = await this.fetchCategoriesFromAPI(url);
         const transformedCategories = this.transformAndValidateCategories(apiCategoriesData);
-        return this.saveCategoriesToDB(transformedCategories);
+        const savedCategories = await this.saveCategoriesToDB(transformedCategories);
+        return savedCategories;
     }
 
     private async fetchCategoriesFromAPI(url: string): Promise<APICategory[]> {
@@ -86,7 +82,7 @@ export class CategoriesService implements OnModuleInit {
         return validCategories;
     }
 
-
+    // Save array of Categories to the database
     private async saveCategoriesToDB(categoriesData: Category[]): Promise<Category[]> {
         const results = await Promise.allSettled(categoriesData.map(categoryData =>
             this.categoryRepository.save(categoryData)
@@ -105,5 +101,10 @@ export class CategoriesService implements OnModuleInit {
         return savedCategories;
     }
 
+    // Check if the database is populated
+    async isCategoriesPopulated(): Promise<boolean> {
+        const count = await this.categoryRepository.count();
+        return count > 0;
+    }
 
 }

@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseInitializerService } from './databaseInitializer.service';
 
 @Module({
   imports: [ProductsModule, CategoriesModule,
@@ -19,6 +20,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     })
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, DatabaseInitializerService],
 })
 export class AppModule {}
