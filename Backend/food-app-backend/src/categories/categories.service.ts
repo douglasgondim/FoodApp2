@@ -1,13 +1,22 @@
-import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, Logger, HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './category.entity';
 import { map } from 'rxjs/operators';
 import { lastValueFrom } from 'rxjs';
+import { first } from 'rxjs/operators';
+
+
+interface APICategory {
+    idCategory: string;
+    strCategory: string;
+    strCategoryThumb: string;
+    strCategoryDescription: string;
+}
 
 @Injectable()
-export class CategoriesService {
+export class CategoriesService implements OnModuleInit {
     private readonly logger = new Logger(CategoriesService.name);
 
     constructor(
@@ -16,61 +25,85 @@ export class CategoriesService {
         private categoryRepository: Repository<Category>,
     ) { }
 
-    // Fetch categories from the API and save them to the database
-    async fetchAndSaveCategories(): Promise<Category[]> {
-        const categoriesData = await this.fetchCategoriesFromAPI();
-        const transformedCategories = this.transformAndValidateCategories(categoriesData);
+    async onModuleInit(): Promise<void> {
+        // Check if the database already has categories
+        const count = await this.categoryRepository.count();
+        if (count === 0) {
+            this.logger.log("Fetching and saving categories to the database.");
+            const url = "https://www.themealdb.com/api/json/v1/1/categories.php"
+            await this.fetchAndSaveCategories(url);
+        }
+    }
+
+    async getAllCategories(): Promise<Category[]> {
+        return await this.categoryRepository.find();
+    }
+
+    // Fetch categories from TheMealDB API and save them to the database
+    async fetchAndSaveCategories(url: string): Promise<Category[]> {
+        const apiCategoriesData = await this.fetchCategoriesFromAPI(url);
+        const transformedCategories = this.transformAndValidateCategories(apiCategoriesData);
         return this.saveCategoriesToDB(transformedCategories);
     }
 
-    // Fetch categories from TheMealDB API
-    async fetchCategoriesFromAPI(): Promise<Category[]> {
+    private async fetchCategoriesFromAPI(url: string): Promise<APICategory[]> {
         try {
-            const response$ = this.httpService.get('https://www.themealdb.com/api/json/v1/1/categories.php').pipe(
-                map(response => response.data.categories)
+            const response$ = this.httpService.get<{ categories: APICategory[] }>(url).pipe(
+                map(response => response.data.categories),
+                first() // Take the first emitted value and complete the observable
             );
             return await lastValueFrom(response$);
         } catch (error) {
-            this.logger.error('Failed to fetch categories from API', error);
-            throw new HttpException('Failed to fetch categories from API', HttpStatus.INTERNAL_SERVER_ERROR);
+            const errorMessage = `Failed to fetch categories from API: ${error.message}`;
+            this.logger.error(errorMessage, error.stack);
+            throw new HttpException(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    // Transform and validate the categories fetched from the API
-    private transformAndValidateCategories(apiCategories: any[]): Category[] {
-        return apiCategories.map(apiCategory => {
-            const category = new Category();
-            category.categoryName = apiCategory.strCategory;
-            category.categoryThumbnail = apiCategory.strCategoryThumb;
-            category.categoryDescription = apiCategory.strCategoryDescription;
-            return category;
-        });
-    }
+    // Validate data types received from the API and return an array of Category
+    private transformAndValidateCategories(apiCategories: APICategory[]): Category[] {
+        const validCategories: Category[] = [];
 
-    // Save categories to the database
-    async saveCategoriesToDB(categoriesData: Category[]): Promise<Category[]> {
-        try {
-            const savePromises = categoriesData.map(async (categoryData) => {
-                const existingCategory = await this.categoryRepository.findOne({
-                    where: { categoryName: categoryData.categoryName },
-                });
+        for (const apiCategory of apiCategories) {
+            const isValidCategory = typeof apiCategory.idCategory === 'string' &&
+                typeof apiCategory.strCategory === 'string' &&
+                typeof apiCategory.strCategoryThumb === 'string' &&
+                typeof apiCategory.strCategoryDescription === 'string';
 
-                // If the category does not already exist, insert ir to the database.
-                if (!existingCategory) {
-                    return this.categoryRepository.save(categoryData);
-                }
-            });
-            return Promise.all(savePromises);
-        } catch (error) {
-            this.logger.error('Failed to save categories to the database', error);
-            if (error.code === '23505') { // PostgreSQL unique violation error code
-                throw new HttpException('Duplicate category name', HttpStatus.BAD_REQUEST);
+
+            if (isValidCategory) {
+                const category = new Category();
+                category.categoryName = apiCategory.strCategory.trim();
+                category.categoryThumbnail = apiCategory.strCategoryThumb.trim();
+                category.categoryDescription = apiCategory.strCategoryDescription.trim();
+
+                validCategories.push(category)
             } else {
-                throw new HttpException('Failed to save categories to the database', HttpStatus.INTERNAL_SERVER_ERROR);
+                this.logger.warn(`Invalid category data encountered: ${JSON.stringify(apiCategory)}`);
             }
         }
+
+        return validCategories;
     }
 
+
+    private async saveCategoriesToDB(categoriesData: Category[]): Promise<Category[]> {
+        const results = await Promise.allSettled(categoriesData.map(categoryData =>
+            this.categoryRepository.save(categoryData)
+        ));
+
+        const savedCategories: Category[] = [];
+
+        results.forEach((result, index) => {
+            if (result.status === 'fulfilled') {
+                savedCategories.push(result.value);
+            } else { // if 'rejected'
+                this.logger.error(`Failed to save category: ${categoriesData[index].categoryName}`, result.reason);
+            }
+        });
+
+        return savedCategories;
+    }
 
 
 }
