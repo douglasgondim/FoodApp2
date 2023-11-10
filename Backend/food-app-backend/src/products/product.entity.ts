@@ -1,8 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Unique } from 'typeorm';
 import { Category } from '../categories/category.entity';
+import { DecimalTransformer } from 'src/utils/DecimalTransformer';
 
 @Entity()
-@Unique(["productName", "categoryId"])
+@Unique(["productName", "category"])
 export class Product {
   @PrimaryGeneratedColumn()
   productId: number;
@@ -13,12 +14,8 @@ export class Product {
   @Column({ type: 'text' })
   productThumbnail: string;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0, transformer: new DecimalTransformer() })
   price: number;
-
-
-  @Column()
-  categoryId: number;
   
   @ManyToOne(() => Category, category => category.products)
   @JoinColumn({ name: 'categoryId' }) 

@@ -112,7 +112,7 @@ export class ProductsService {
                 product.productName = apiProduct.strMeal.trim();
                 product.productThumbnail = apiProduct.strMealThumb.trim();
                 product.price = this.assignPriceToProduct(category.categoryName);
-                product.categoryId = category.categoryId;
+                product.category= category;
 
                 validProducts.push(product);
             } else {
