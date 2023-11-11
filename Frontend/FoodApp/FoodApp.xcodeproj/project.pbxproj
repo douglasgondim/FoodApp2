@@ -11,6 +11,9 @@
 		F21B6FD72AFDFBC10070831E /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FD62AFDFBC10070831E /* CartViewModel.swift */; };
 		F21B6FD92AFDFBD10070831E /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FD82AFDFBD10070831E /* CartView.swift */; };
 		F21B6FDE2AFE1E5F0070831E /* GeneralCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FDD2AFE1E5F0070831E /* GeneralCardView.swift */; };
+		F21B6FE12AFE409A0070831E /* CategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FE02AFE409A0070831E /* CategoryModel.swift */; };
+		F21B6FE32AFE40C00070831E /* CategoriesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FE22AFE40C00070831E /* CategoriesListViewModel.swift */; };
+		F21B6FE52AFE40D20070831E /* CategoriesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FE42AFE40D20070831E /* CategoriesListView.swift */; };
 		F2271B752AFD8527004AD79D /* FoodApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B742AFD8527004AD79D /* FoodApp.swift */; };
 		F2271B772AFD8527004AD79D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B762AFD8527004AD79D /* ContentView.swift */; };
 		F2271B792AFD8528004AD79D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2271B782AFD8528004AD79D /* Assets.xcassets */; };
@@ -22,8 +25,8 @@
 		F2271B972AFD8528004AD79D /* FoodAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B962AFD8528004AD79D /* FoodAppUITestsLaunchTests.swift */; };
 		F2271BA52AFD86FA004AD79D /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BA42AFD86FA004AD79D /* ProductModel.swift */; };
 		F2271BA72AFD8714004AD79D /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BA62AFD8714004AD79D /* APIService.swift */; };
-		F2271BA92AFD89BE004AD79D /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BA82AFD89BE004AD79D /* ProductListViewModel.swift */; };
-		F2271BAB2AFD89D4004AD79D /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BAA2AFD89D4004AD79D /* ProductListView.swift */; };
+		F2271BA92AFD89BE004AD79D /* ProductsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BA82AFD89BE004AD79D /* ProductsListViewModel.swift */; };
+		F2271BAB2AFD89D4004AD79D /* ProductsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BAA2AFD89D4004AD79D /* ProductsListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +51,9 @@
 		F21B6FD62AFDFBC10070831E /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		F21B6FD82AFDFBD10070831E /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		F21B6FDD2AFE1E5F0070831E /* GeneralCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralCardView.swift; sourceTree = "<group>"; };
+		F21B6FE02AFE409A0070831E /* CategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryModel.swift; sourceTree = "<group>"; };
+		F21B6FE22AFE40C00070831E /* CategoriesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesListViewModel.swift; sourceTree = "<group>"; };
+		F21B6FE42AFE40D20070831E /* CategoriesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesListView.swift; sourceTree = "<group>"; };
 		F2271B712AFD8527004AD79D /* FoodApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2271B742AFD8527004AD79D /* FoodApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodApp.swift; sourceTree = "<group>"; };
 		F2271B762AFD8527004AD79D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -62,8 +68,8 @@
 		F2271B962AFD8528004AD79D /* FoodAppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodAppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		F2271BA42AFD86FA004AD79D /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 		F2271BA62AFD8714004AD79D /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		F2271BA82AFD89BE004AD79D /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
-		F2271BAA2AFD89D4004AD79D /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
+		F2271BA82AFD89BE004AD79D /* ProductsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListViewModel.swift; sourceTree = "<group>"; };
+		F2271BAA2AFD89D4004AD79D /* ProductsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,8 +111,19 @@
 			isa = PBXGroup;
 			children = (
 				F21B6FDD2AFE1E5F0070831E /* GeneralCardView.swift */,
+				F2271BA62AFD8714004AD79D /* APIService.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		F21B6FDF2AFE407B0070831E /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F21B6FE02AFE409A0070831E /* CategoryModel.swift */,
+				F21B6FE22AFE40C00070831E /* CategoriesListViewModel.swift */,
+				F21B6FE42AFE40D20070831E /* CategoriesListView.swift */,
+			);
+			path = Categories;
 			sourceTree = "<group>";
 		};
 		F2271B682AFD8526004AD79D = {
@@ -132,6 +149,7 @@
 		F2271B732AFD8527004AD79D /* FoodApp */ = {
 			isa = PBXGroup;
 			children = (
+				F21B6FDF2AFE407B0070831E /* Categories */,
 				F21B6FDC2AFE1E3B0070831E /* Util */,
 				F21B6FD32AFDFB9A0070831E /* Cart */,
 				F2271BA32AFD86D6004AD79D /* Products */,
@@ -174,9 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				F2271BA42AFD86FA004AD79D /* ProductModel.swift */,
-				F2271BA62AFD8714004AD79D /* APIService.swift */,
-				F2271BA82AFD89BE004AD79D /* ProductListViewModel.swift */,
-				F2271BAA2AFD89D4004AD79D /* ProductListView.swift */,
+				F2271BA82AFD89BE004AD79D /* ProductsListViewModel.swift */,
+				F2271BAA2AFD89D4004AD79D /* ProductsListView.swift */,
 			);
 			path = Products;
 			sourceTree = "<group>";
@@ -311,11 +328,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2271BAB2AFD89D4004AD79D /* ProductListView.swift in Sources */,
+				F21B6FE12AFE409A0070831E /* CategoryModel.swift in Sources */,
+				F2271BAB2AFD89D4004AD79D /* ProductsListView.swift in Sources */,
 				F2271B7E2AFD8528004AD79D /* Persistence.swift in Sources */,
 				F2271B812AFD8528004AD79D /* FoodApp.xcdatamodeld in Sources */,
 				F2271B772AFD8527004AD79D /* ContentView.swift in Sources */,
-				F2271BA92AFD89BE004AD79D /* ProductListViewModel.swift in Sources */,
+				F2271BA92AFD89BE004AD79D /* ProductsListViewModel.swift in Sources */,
+				F21B6FE32AFE40C00070831E /* CategoriesListViewModel.swift in Sources */,
 				F21B6FD52AFDFBB50070831E /* CartModel.swift in Sources */,
 				F21B6FD92AFDFBD10070831E /* CartView.swift in Sources */,
 				F2271B752AFD8527004AD79D /* FoodApp.swift in Sources */,
@@ -323,6 +342,7 @@
 				F2271BA52AFD86FA004AD79D /* ProductModel.swift in Sources */,
 				F21B6FD72AFDFBC10070831E /* CartViewModel.swift in Sources */,
 				F21B6FDE2AFE1E5F0070831E /* GeneralCardView.swift in Sources */,
+				F21B6FE52AFE40D20070831E /* CategoriesListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

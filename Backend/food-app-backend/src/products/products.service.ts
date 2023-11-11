@@ -1,6 +1,5 @@
 import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { Category } from '../categories/category.entity';
 import { Product } from './product.entity';
@@ -111,7 +110,7 @@ export class ProductsService {
                 const product = new Product();
                 product.productName = apiProduct.strMeal.trim();
                 product.productThumbnail = apiProduct.strMealThumb.trim();
-                product.price = this.assignPriceToProduct(category.categoryName);
+                product.productPrice = this.assignPriceToProduct(category.categoryName);
                 product.category= category;
 
                 validProducts.push(product);

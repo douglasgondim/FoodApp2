@@ -11,16 +11,25 @@ struct ProductsResponse: Codable {
     let products: [Product]
 }
 
-struct Product: Identifiable, Codable {
-    let id: Int
+struct Product: GeneralItemProtocol, Codable {
+    let productId: Int
     let productName: String
     let productThumbnail: String
-    let price: Double
-
+    let productPrice: Double
+    
+    var thumbnail: String { productThumbnail }
+    var title: String { productName }
+    var id : Int { productId }
+    
+    
     enum CodingKeys: String, CodingKey {
-        case id = "productId"
+        case productId
         case productName
         case productThumbnail
-        case price
+        case productPrice
     }
+    
+    
+    
+    
 }

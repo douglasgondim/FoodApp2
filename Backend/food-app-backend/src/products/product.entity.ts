@@ -15,7 +15,7 @@ export class Product {
   productThumbnail: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0, transformer: new DecimalTransformer() })
-  price: number;
+  productPrice: number;
   
   @ManyToOne(() => Category, category => category.products)
   @JoinColumn({ name: 'categoryId' }) 

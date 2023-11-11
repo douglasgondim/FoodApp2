@@ -11,53 +11,36 @@ import CoreData
 struct ContentView: View {
     var body: some View {
         TabView {
-            NavigationView {
-                ProductListView()
-                    .navigationTitle("Products")
-                    .navigationBarItems(leading: MenuButton())
+            // Categories Tab
+            NavigationStack {
+                CategoriesListView()
+                    .navigationTitle("Categories")
             }
             .tabItem {
                 Image(systemName: "list.dash")
-                Text("Products")
+                Text("Categories")
             }
             
-            CartView()
-                .tabItem {
-                    Image(systemName: "cart")
-                    Text("Cart")
-                }
-        }
-    }
-}
-struct MenuView: View {
-    var body: some View {
-        List {
-            Text("Pork")
-            Text("Beef")
-            Text("Lamb")
-  
-        }
-    }
-}
-struct MenuButton: View {
-    @State var isShowingMenu = false
-    
-    var body: some View {
-        Button(action: {
-            isShowingMenu.toggle()
-        }) {
-            Image(systemName: "line.horizontal.3")
-        }
-        .sheet(isPresented: $isShowingMenu) {
-            MenuView() 
+            // Cart Tab
+            NavigationStack {
+                CartView(viewModel: CartViewModel())
+                    .navigationTitle("Cart")
+            }
+            .tabItem {
+                Image(systemName: "cart")
+                Text("Cart")
+            }
+        }.onAppear {
+            if #available(iOS 15.0, *) {
+                let appearance = UITabBarAppearance()
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+            }
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        
         ContentView()
-        // .environment(\.managedObjectContext, persistenceController.container.viewContext)
     }
 }
