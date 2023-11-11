@@ -14,9 +14,6 @@ protocol GeneralItemProtocol: Identifiable {
     
 }
 
-
-
-
 struct GeneralCardView: View {
     let generalItem: any GeneralItemProtocol
     let onAddToCartClicked: () -> Void
@@ -54,6 +51,7 @@ struct GeneralCardView: View {
                     .font(.subheadline)
                     .foregroundColor(Color("GeneralCardPrice"))
                     .frame(height: 20)
+                    .padding(.bottom, 5)
                 
                 
                 
@@ -100,7 +98,8 @@ struct GeneralCardView_Previews: PreviewProvider {
             GeneralCardView(generalItem: Category(
                 categoryId: 1,
                 categoryName: "Fruits",
-                categoryThumbnail: ""
+                categoryThumbnail: "",
+                categoryDescription: ""
             ),
                             onAddToCartClicked: {},
                             onCardClicked: {}

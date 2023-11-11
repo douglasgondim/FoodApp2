@@ -23,7 +23,7 @@ struct CartView: View {
                 
                 List {
                     Section(header: Color.clear.frame(height:0)) {
-                        ForEach(viewModel.items) { item in
+                        ForEach(viewModel.cartItems) { item in
                             HStack {
                                 AsyncImage(url: URL(string: item.product.productThumbnail))
                                     .frame(width: 50, height: 50)
@@ -57,9 +57,7 @@ struct CartView: View {
                 .padding(.vertical, 10)
             
         }
-        //        .background(Color(UIColor.secondarySystemBackground))
-        
-        //        .navigationBarTitle("Cart", displayMode: .)
+
     }
 }
 
@@ -129,7 +127,7 @@ struct TotalAndCheckoutView: View {
             
             // Checkout Button
             Button(action: {
-                // Implement checkout action
+                
             }) {
                 Text("Checkout")
                     .font(.headline)
@@ -155,7 +153,7 @@ struct TotalAndCheckoutView: View {
 
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
-        CartView(viewModel: CartViewModel())
+        CartView(viewModel: CartViewModel(apiService: APIService()))
     }
 }
 

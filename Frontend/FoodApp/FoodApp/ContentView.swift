@@ -9,11 +9,21 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    var apiService : APIService
+    let cartViewModel : CartViewModel
+    
+    init(){
+        apiService = APIService()
+        cartViewModel = CartViewModel(apiService: apiService)
+    }
+
+   
+    
     var body: some View {
         TabView {
             // Categories Tab
             NavigationStack {
-                CategoriesListView()
+                CategoriesListView(viewModel : CategoriesListViewModel(apiService: apiService, cartViewModel: cartViewModel))
                     .navigationTitle("Categories")
             }
             .tabItem {
@@ -23,7 +33,7 @@ struct ContentView: View {
             
             // Cart Tab
             NavigationStack {
-                CartView(viewModel: CartViewModel())
+                CartView(viewModel: cartViewModel)
                     .navigationTitle("Cart")
             }
             .tabItem {

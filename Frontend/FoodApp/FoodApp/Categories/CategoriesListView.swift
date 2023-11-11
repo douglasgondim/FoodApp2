@@ -8,18 +8,12 @@
 import SwiftUI
 
 struct CategoriesListView: View {
-    @StateObject var viewModel = CategoriesListViewModel(apiService: APIService())
-    var body: some View {
-        CategoriesGridView(viewModel: viewModel)
+    @ObservedObject var viewModel : CategoriesListViewModel
+    
+    
+    init(viewModel : CategoriesListViewModel){
+        self.viewModel = viewModel
     }
-}
-
-
-
-struct CategoriesGridView: View {
-    @ObservedObject var viewModel: CategoriesListViewModel
-    @State private var isNavigationActive: Bool = false
-    @State private var selectedCategory: Category?
     
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
@@ -35,8 +29,7 @@ struct CategoriesGridView: View {
                         generalItem: category,
                         onAddToCartClicked: { },
                         onCardClicked: {
-                            selectedCategory = category
-                            isNavigationActive = true
+                            viewModel.selectCategory(category)
                         }
                     )
                 }
@@ -45,23 +38,26 @@ struct CategoriesGridView: View {
             .padding(.vertical, 30)
         }
         .navigationTitle("Categories")
-        .navigationDestination(isPresented: $isNavigationActive) {
-            // Check if selectedCategory is not nil before navigating
-            if let selectedCategory = selectedCategory {
-                ProductsListView(category: selectedCategory)
+        .navigationDestination(isPresented: $viewModel.isNavigationActive) {
+            if let selectedCategory = viewModel.selectedCategory {
+                ProductsListView(viewModel: ProductsListViewModel(apiService: viewModel.getAPIService(), cartViewModel: viewModel.getCartViewModel(), category: selectedCategory))
             }
         }.onAppear(){
-            selectedCategory = nil
-            isNavigationActive = false
+            viewModel.resetSelectedCategory()
         }
         
     }
+    
 }
 
 
-struct CategoriesGridView_Previews: PreviewProvider {
+
+
+
+
+struct CategoriesListView_Previews: PreviewProvider {
     static var previews: some View {
-        CategoriesGridView(viewModel: CategoriesListViewModel(apiService: APIService()))
+        CategoriesListView(viewModel: CategoriesListViewModel(apiService: APIService(), cartViewModel: CartViewModel(apiService: APIService())))
             .previewLayout(.sizeThatFits)
         
     }

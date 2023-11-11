@@ -6,80 +6,63 @@
 //
 
 import Foundation
-import Combine
 import SwiftUI
 
-//class CartViewModel: ObservableObject {
-//    var cartItems: [Product] = []
-//    private var cancellables = Set<AnyCancellable>()
-//
-//    init(productsListViewModel: ProductsListViewModel) {
-//        productsListViewModel.addProductToCartPublisher
-//            .sink { [weak self] product in
-//                self?.addProductToCart(product)
-//            }
-//            .store(in: &cancellables)
-//    }
-//
-//    private func addProductToCart(_ product: Product) {
-//        // Logic to add product to the cart
-//        cartItems.append(product)
-//    }
-//
-//    // Rest of your ViewModel code
-//}
-
 class CartViewModel: ObservableObject {
-    @Published var items: [CartItem] = []
+    @Published var cartItems: [CartItem] = []
     @AppStorage("cartItems") var itemsData: Data = Data()
+    private var apiService : APIService
     
-    init() {
-        let apple = Product(productId: 1, productName: "Apple", productThumbnail: "apple.jpg", productPrice: 0.99)
-        let banana = Product(productId: 2, productName: "Banana With a touch of papaya a pargeniana", productThumbnail: "banana.jpg", productPrice: 120.59)
-        
-        items = [
-            CartItem(product: apple, quantity: 1),
-            CartItem(product: banana, quantity: 220),
-            
-        ]
+    init(apiService: APIService) {
+        self.apiService = apiService
         loadItems()
     }
     
     private func saveItems() {
-        if let encodedData = try? JSONEncoder().encode(items) {
+        if let encodedData = try? JSONEncoder().encode(cartItems) {
             itemsData = encodedData
         }
     }
     
     private func loadItems() {
         if let decodedItems = try? JSONDecoder().decode([CartItem].self, from: itemsData) {
-            items = decodedItems
+            cartItems = decodedItems
         } else {
+            print("failed to laod items in cart.")
             // Fallback initialization if no saved data exists
         }
     }
     
     var total: Double {
-        items.reduce(0) { $0 + $1.product.productPrice * Double($1.quantity) }
+        cartItems.reduce(0) { $0 + $1.product.productPrice * Double($1.quantity) }
     }
     
     func deleteItem(_ item: CartItem) {
-        items.removeAll { $0.id == item.id }
+        cartItems.removeAll { $0.id == item.id }
     }
     
     func increaseQuantity(of item: CartItem) {
-        if let index = items.firstIndex(where: { $0.id == item.id }) {
-            items[index].quantity += 1
+        if let index = cartItems.firstIndex(where: { $0.id == item.id }) {
+            cartItems[index].quantity += 1
         }
     }
     
     func decreaseQuantity(of item: CartItem) {
-        if let index = items.firstIndex(where: { $0.id == item.id }), items[index].quantity > 1 {
-            items[index].quantity -= 1
+        if let index = cartItems.firstIndex(where: { $0.id == item.id }), cartItems[index].quantity > 1 {
+            cartItems[index].quantity -= 1
         }
     }
     
     func isCartEmpty() -> Bool {
-        return items.count == 0
+        return cartItems.count == 0
+    }
+    
+    func addToCart(cartItem: CartItem) {
+        if let index = cartItems.firstIndex(where: { $0.product.productId == cartItem.product.productId }) {
+            cartItems[index].quantity += cartItem.quantity
+        } else {
+            cartItems.append(cartItem)
+        }
+        saveItems()
     }
 }

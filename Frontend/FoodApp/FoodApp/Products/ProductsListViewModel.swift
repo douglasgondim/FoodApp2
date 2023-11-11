@@ -9,21 +9,31 @@ import Foundation
 import Combine
 class ProductsListViewModel: ObservableObject {
     @Published var products: [Product] = []
-    var addProductToCartPublisher = PassthroughSubject<Product, Never>()
-
+    @Published var showConfirmation: Bool = false
+    
     private var cancellables: Set<AnyCancellable> = []
-    private var apiService = APIService()
+    private let apiService : APIService
+    private let cartViewModel : CartViewModel
     private var category : Category
-
-    init(category : Category) {
+    
+    init(apiService : APIService, cartViewModel : CartViewModel, category : Category) {
         self.category = category
+        self.apiService = apiService
+        self.cartViewModel = cartViewModel
         loadProducts(for: category.categoryName)
     }
     
-    func addToCart(product: Product) {
-           addProductToCartPublisher.send(product)
-       }
-
+    func getCategoryName() -> String{
+        return category.categoryName
+    }
+    func addProductToCart(_ product: Product) {
+        cartViewModel.addToCart(cartItem: CartItem(product: product, quantity: 1))
+        showConfirmation = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.showConfirmation = false
+        }
+    }
+    
     func loadProducts(for category: String) {
         apiService.fetchProductsForCategory(for: category)
             .receive(on: RunLoop.main)
@@ -40,16 +50,3 @@ class ProductsListViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 }
-
-//extension Product {
-//    func toGeneralItem(onAddToCartClick: @escaping () -> Void) -> GeneralItem {
-//        return GeneralItem(
-//            thumbnail: self.productThumbnail,
-//            title: self.productName,
-//            price: self.price,
-//            showAddToCartButton: true,
-//            onAddToCartClick: onAddToCartClick,
-//            onCardClickAction: nil
-//        )
-//    }
-//}

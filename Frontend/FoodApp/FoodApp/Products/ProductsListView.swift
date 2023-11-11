@@ -9,31 +9,29 @@
 import SwiftUI
 
 struct ProductsListView: View {
-    @StateObject var viewModel: ProductsListViewModel
-
-    init(category: Category) {
-        _viewModel = StateObject(wrappedValue: ProductsListViewModel(category: category))
-    }
-
-    var body: some View {
-        ProductGridView(viewModel: viewModel)
-    }
-}
-
-
-struct ProductGridView: View {
     @ObservedObject var viewModel: ProductsListViewModel
+
+    init(viewModel : ProductsListViewModel) {
+        self.viewModel = viewModel
+    }
+
+    
+    
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
     ]
     
     var body: some View {
+
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(viewModel.products) { product in
                     GeneralCardView(generalItem: product,
-                    onAddToCartClicked: { },
+                    onAddToCartClicked: {
+                        viewModel.addProductToCart(product)
+                        
+                    },
                     onCardClicked: { }
                     )
                 }
@@ -41,20 +39,54 @@ struct ProductGridView: View {
             .padding(.horizontal)
             .padding(.vertical, 20)
             
+            
         }
+        .navigationTitle(viewModel.getCategoryName())
+        .overlay(
+            Group{
+                if viewModel.showConfirmation {
+                    ConfirmationView()
+                        .animation(.easeInOut, value: viewModel.showConfirmation)
+                       
+                }else{
+                    EmptyView()
+                }
+            }
+        )
+    }
+}
+
+
+
+struct ConfirmationView: View {
+    var body: some View {
+        Text("Added to Cart")
+            .font(.headline)
+            .foregroundColor(.white)
+            .padding(.horizontal, 30)
+            .padding(.vertical, 15)
+            .background(Color.green)
+            .cornerRadius(25)
+            .shadow(radius: 10)
+            .transition(.scale)
+            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.maxY - 280)
     }
 }
 
 
 
 
-struct ProductGridView_Previews: PreviewProvider {
+
+struct ProductsListView_Previews: PreviewProvider {
     static var previews: some View {
-        ProductGridView(viewModel: ProductsListViewModel(category: Category(
-            categoryId: 1,
-            categoryName: "Beef",
-            categoryThumbnail: "String"
-        )))
+        ProductsListView(
+            viewModel: ProductsListViewModel(apiService: APIService(), cartViewModel: CartViewModel(apiService: APIService()),
+            category: Category(
+                categoryId: 1,
+                categoryName: "Beef",
+                categoryThumbnail: "",
+                categoryDescription: ""
+            )))
             .previewLayout(.sizeThatFits)
         //.padding()
     }

@@ -15,6 +15,7 @@ struct Category: GeneralItemProtocol, Codable, Hashable {
     let categoryId: Int
     let categoryName: String
     let categoryThumbnail: String
+    let categoryDescription : String
     
     var thumbnail: String { categoryThumbnail }
     var title: String { categoryName }
@@ -24,6 +25,7 @@ struct Category: GeneralItemProtocol, Codable, Hashable {
         case categoryId
         case categoryName
         case categoryThumbnail
+        case categoryDescription
     }
     
     

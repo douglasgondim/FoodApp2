@@ -11,20 +11,28 @@ import Combine
 
 class CategoriesListViewModel: ObservableObject {
     @Published var categories: [Category] = []
+    @Published var selectedCategory: Category? = nil
+    @Published var isNavigationActive: Bool = false
+    
+    private let apiService: APIService
+    private let cartViewModel : CartViewModel
     
     private var cancellables: Set<AnyCancellable> = []
+
     
-    func onCardClicked(){
-        
-    }
-    
-    private var apiService: APIService
-    
-    init(apiService: APIService) {
+    init(apiService: APIService, cartViewModel : CartViewModel) {
         self.apiService = apiService
+        self.cartViewModel = cartViewModel
         loadCategories()
     }
     
+    func getAPIService() -> APIService {
+        return apiService
+    }
+    
+    func getCartViewModel() -> CartViewModel {
+        return cartViewModel
+    }
     
     func loadCategories() {
         apiService.fetchCategories()
@@ -40,5 +48,15 @@ class CategoriesListViewModel: ObservableObject {
                 self?.categories = categories
             })
             .store(in: &cancellables)
+    }
+    
+    func selectCategory(_ category: Category) {
+        selectedCategory = category
+        isNavigationActive = true
+    }
+    
+    func resetSelectedCategory(){
+        selectedCategory = nil
+        isNavigationActive = false
     }
 }
