@@ -12,18 +12,12 @@ struct ContentView: View {
     var apiService : APIService
     let cartViewModel : CartViewModel
     
-    init(){
-        apiService = APIService()
-        cartViewModel = CartViewModel(apiService: apiService)
-    }
-
-   
-    
     var body: some View {
         TabView {
             // Categories Tab
             NavigationStack {
                 CategoriesListView(viewModel : CategoriesListViewModel(apiService: apiService, cartViewModel: cartViewModel))
+                
                     .navigationTitle("Categories")
             }
             .tabItem {
@@ -32,14 +26,7 @@ struct ContentView: View {
             }
             
             // Cart Tab
-            NavigationStack {
-                CartView(viewModel: cartViewModel)
-                    .navigationTitle("Cart")
-            }
-            .tabItem {
-                Image(systemName: "cart")
-                Text("Cart")
-            }
+            CartTabView(cartViewModel: cartViewModel)
         }.onAppear {
             if #available(iOS 15.0, *) {
                 let appearance = UITabBarAppearance()
@@ -49,8 +36,24 @@ struct ContentView: View {
     }
 }
 
+struct CartTabView: View {
+    @ObservedObject var cartViewModel: CartViewModel
+
+    var body: some View {
+        NavigationStack {
+            CartView(viewModel: cartViewModel)
+                .navigationTitle("Cart")
+        } .tabItem {
+            Image(systemName: "cart")
+            Text("Cart")
+        }.badge(cartViewModel.totalItemCount)
+    }
+}
+
 struct ContentView_Previews: PreviewProvider {
+
     static var previews: some View {
-        ContentView()
+        let apiService = APIService()
+        ContentView(apiService: apiService, cartViewModel: CartViewModel(apiService: apiService))
     }
 }

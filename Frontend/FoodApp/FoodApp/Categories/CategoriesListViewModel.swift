@@ -13,12 +13,13 @@ class CategoriesListViewModel: ObservableObject {
     @Published var categories: [Category] = []
     @Published var selectedCategory: Category? = nil
     @Published var isNavigationActive: Bool = false
+    @Published var errorMessage: String?
     
     private let apiService: APIService
     private let cartViewModel : CartViewModel
     
     private var cancellables: Set<AnyCancellable> = []
-
+    
     
     init(apiService: APIService, cartViewModel : CartViewModel) {
         self.apiService = apiService
@@ -35,13 +36,15 @@ class CategoriesListViewModel: ObservableObject {
     }
     
     func loadCategories() {
+        categories.removeAll()
         apiService.fetchCategories()
             .receive(on: RunLoop.main)
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .finished:
                     break
                 case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
                     print(error.localizedDescription)
                 }
             }, receiveValue: { [weak self] categories in

@@ -18,6 +18,7 @@ struct GeneralCardView: View {
     let generalItem: any GeneralItemProtocol
     let onAddToCartClicked: () -> Void
     let onCardClicked: () -> Void
+    @State private var isTapped: Bool = false
     
     var body: some View {
         VStack {
@@ -82,8 +83,17 @@ struct GeneralCardView: View {
         .background(Color("GeneralCardBackground"))
         .cornerRadius(10)
         .shadow(radius: 5)
+
+        .opacity(isTapped ? 0.5 : 1.0)
         .onTapGesture {
-            onCardClicked()
+            if(generalItem as? Category != nil){
+                isTapped = true
+                onCardClicked()
+                // Reset the opacity after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    isTapped = false
+                }
+            }
         }
         
     }

@@ -10,6 +10,7 @@ import Combine
 class ProductsListViewModel: ObservableObject {
     @Published var products: [Product] = []
     @Published var showConfirmation: Bool = false
+    @Published var errorMessage : String?
     
     private var cancellables: Set<AnyCancellable> = []
     private let apiService : APIService
@@ -35,13 +36,15 @@ class ProductsListViewModel: ObservableObject {
     }
     
     func loadProducts(for category: String) {
+        products.removeAll()
         apiService.fetchProductsForCategory(for: category)
             .receive(on: RunLoop.main)
-            .sink(receiveCompletion: { completion in
+            .sink(receiveCompletion: { [weak self] completion in
                 switch completion {
                 case .finished:
                     break
                 case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
                     print(error.localizedDescription)
                 }
             }, receiveValue: { [weak self] products in

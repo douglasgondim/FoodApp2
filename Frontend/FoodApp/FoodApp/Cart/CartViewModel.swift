@@ -9,8 +9,14 @@ import Foundation
 import SwiftUI
 
 class CartViewModel: ObservableObject {
-    @Published var cartItems: [CartItem] = []
+    @Published var cartItems: [CartItem] = [] {
+        didSet {
+            saveItems()
+        
+        }
+    }
     @AppStorage("cartItems") var itemsData: Data = Data()
+    
     private var apiService : APIService
     
     init(apiService: APIService) {
@@ -18,6 +24,7 @@ class CartViewModel: ObservableObject {
         loadItems()
     }
     
+       
     private func saveItems() {
         if let encodedData = try? JSONEncoder().encode(cartItems) {
             itemsData = encodedData
@@ -28,7 +35,7 @@ class CartViewModel: ObservableObject {
         if let decodedItems = try? JSONDecoder().decode([CartItem].self, from: itemsData) {
             cartItems = decodedItems
         } else {
-            print("failed to laod items in cart.")
+
             // Fallback initialization if no saved data exists
         }
     }
@@ -39,6 +46,12 @@ class CartViewModel: ObservableObject {
     
     func deleteItem(_ item: CartItem) {
         cartItems.removeAll { $0.id == item.id }
+    }
+    
+    var totalItemCount: Int {
+        let a = cartItems.reduce(0) { $0 + $1.quantity }
+        print("count \(a)")
+        return a
     }
     
     func increaseQuantity(of item: CartItem) {
@@ -63,6 +76,6 @@ class CartViewModel: ObservableObject {
         } else {
             cartItems.append(cartItem)
         }
-        saveItems()
+      
     }
 }

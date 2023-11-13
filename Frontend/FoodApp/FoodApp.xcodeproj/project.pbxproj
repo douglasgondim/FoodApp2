@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F21726452B00A74A00D5D9E5 /* CreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21726442B00A74A00D5D9E5 /* CreditCardViewModel.swift */; };
+		F21726482B00B2E200D5D9E5 /* CreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21726472B00B2E200D5D9E5 /* CreditCard.swift */; };
+		F217264A2B00B2F600D5D9E5 /* CreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21726492B00B2F600D5D9E5 /* CreditCardView.swift */; };
 		F21B6FD52AFDFBB50070831E /* CartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FD42AFDFBB50070831E /* CartModel.swift */; };
 		F21B6FD72AFDFBC10070831E /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FD62AFDFBC10070831E /* CartViewModel.swift */; };
 		F21B6FD92AFDFBD10070831E /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B6FD82AFDFBD10070831E /* CartView.swift */; };
@@ -27,6 +30,9 @@
 		F2271BA72AFD8714004AD79D /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BA62AFD8714004AD79D /* APIService.swift */; };
 		F2271BA92AFD89BE004AD79D /* ProductsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BA82AFD89BE004AD79D /* ProductsListViewModel.swift */; };
 		F2271BAB2AFD89D4004AD79D /* ProductsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271BAA2AFD89D4004AD79D /* ProductsListView.swift */; };
+		F29E116D2B0082B000C6EB42 /* PaymentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29E116C2B0082B000C6EB42 /* PaymentView.swift */; };
+		F29E116F2B0082C900C6EB42 /* PaymentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29E116E2B0082C900C6EB42 /* PaymentViewModel.swift */; };
+		F29E11712B0082D400C6EB42 /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29E11702B0082D400C6EB42 /* PaymentMethod.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +53,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F21726442B00A74A00D5D9E5 /* CreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardViewModel.swift; sourceTree = "<group>"; };
+		F21726472B00B2E200D5D9E5 /* CreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCard.swift; sourceTree = "<group>"; };
+		F21726492B00B2F600D5D9E5 /* CreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardView.swift; sourceTree = "<group>"; };
 		F21B6FD42AFDFBB50070831E /* CartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartModel.swift; sourceTree = "<group>"; };
 		F21B6FD62AFDFBC10070831E /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
 		F21B6FD82AFDFBD10070831E /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
@@ -70,6 +79,9 @@
 		F2271BA62AFD8714004AD79D /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		F2271BA82AFD89BE004AD79D /* ProductsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListViewModel.swift; sourceTree = "<group>"; };
 		F2271BAA2AFD89D4004AD79D /* ProductsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsListView.swift; sourceTree = "<group>"; };
+		F29E116C2B0082B000C6EB42 /* PaymentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentView.swift; sourceTree = "<group>"; };
+		F29E116E2B0082C900C6EB42 /* PaymentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewModel.swift; sourceTree = "<group>"; };
+		F29E11702B0082D400C6EB42 /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +109,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F21726462B00B2C600D5D9E5 /* CreditCard */ = {
+			isa = PBXGroup;
+			children = (
+				F21726472B00B2E200D5D9E5 /* CreditCard.swift */,
+				F21726442B00A74A00D5D9E5 /* CreditCardViewModel.swift */,
+				F21726492B00B2F600D5D9E5 /* CreditCardView.swift */,
+			);
+			path = CreditCard;
+			sourceTree = "<group>";
+		};
 		F21B6FD32AFDFB9A0070831E /* Cart */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,6 +171,7 @@
 		F2271B732AFD8527004AD79D /* FoodApp */ = {
 			isa = PBXGroup;
 			children = (
+				F29E116B2B00829C00C6EB42 /* Payment */,
 				F21B6FDF2AFE407B0070831E /* Categories */,
 				F21B6FDC2AFE1E3B0070831E /* Util */,
 				F21B6FD32AFDFB9A0070831E /* Cart */,
@@ -196,6 +219,17 @@
 				F2271BAA2AFD89D4004AD79D /* ProductsListView.swift */,
 			);
 			path = Products;
+			sourceTree = "<group>";
+		};
+		F29E116B2B00829C00C6EB42 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				F21726462B00B2C600D5D9E5 /* CreditCard */,
+				F29E11702B0082D400C6EB42 /* PaymentMethod.swift */,
+				F29E116E2B0082C900C6EB42 /* PaymentViewModel.swift */,
+				F29E116C2B0082B000C6EB42 /* PaymentView.swift */,
+			);
+			path = Payment;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,6 +320,9 @@
 				Base,
 			);
 			mainGroup = F2271B682AFD8526004AD79D;
+			packageReferences = (
+				F29E116A2B00810800C6EB42 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+			);
 			productRefGroup = F2271B722AFD8527004AD79D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -333,11 +370,17 @@
 				F2271B7E2AFD8528004AD79D /* Persistence.swift in Sources */,
 				F2271B812AFD8528004AD79D /* FoodApp.xcdatamodeld in Sources */,
 				F2271B772AFD8527004AD79D /* ContentView.swift in Sources */,
+				F29E116D2B0082B000C6EB42 /* PaymentView.swift in Sources */,
+				F21726482B00B2E200D5D9E5 /* CreditCard.swift in Sources */,
 				F2271BA92AFD89BE004AD79D /* ProductsListViewModel.swift in Sources */,
 				F21B6FE32AFE40C00070831E /* CategoriesListViewModel.swift in Sources */,
 				F21B6FD52AFDFBB50070831E /* CartModel.swift in Sources */,
+				F21726452B00A74A00D5D9E5 /* CreditCardViewModel.swift in Sources */,
+				F217264A2B00B2F600D5D9E5 /* CreditCardView.swift in Sources */,
 				F21B6FD92AFDFBD10070831E /* CartView.swift in Sources */,
 				F2271B752AFD8527004AD79D /* FoodApp.swift in Sources */,
+				F29E116F2B0082C900C6EB42 /* PaymentViewModel.swift in Sources */,
+				F29E11712B0082D400C6EB42 /* PaymentMethod.swift in Sources */,
 				F2271BA72AFD8714004AD79D /* APIService.swift in Sources */,
 				F2271BA52AFD86FA004AD79D /* ProductModel.swift in Sources */,
 				F21B6FD72AFDFBC10070831E /* CartViewModel.swift in Sources */,
@@ -672,6 +715,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F29E116A2B00810800C6EB42 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stripe/stripe-ios-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.18.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCVersionGroup section */
 		F2271B7F2AFD8528004AD79D /* FoodApp.xcdatamodeld */ = {

@@ -11,10 +11,6 @@ struct CategoriesListView: View {
     @ObservedObject var viewModel : CategoriesListViewModel
     
     
-    init(viewModel : CategoriesListViewModel){
-        self.viewModel = viewModel
-    }
-    
     let columns: [GridItem] = [
         GridItem(.flexible(), spacing: 16),
         GridItem(.flexible(), spacing: 16)
@@ -36,23 +32,35 @@ struct CategoriesListView: View {
             }
             .padding(.horizontal)
             .padding(.vertical, 30)
+            
         }
+        
         .navigationTitle("Categories")
         .navigationDestination(isPresented: $viewModel.isNavigationActive) {
             if let selectedCategory = viewModel.selectedCategory {
                 ProductsListView(viewModel: ProductsListViewModel(apiService: viewModel.getAPIService(), cartViewModel: viewModel.getCartViewModel(), category: selectedCategory))
             }
-        }.onAppear(){
-            viewModel.resetSelectedCategory()
         }
+        .refreshable {
+            viewModel.loadCategories()
+        }
+        .onAppear(){
+            viewModel.resetSelectedCategory()
+        }.alert(isPresented: Binding<Bool>(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage ?? "An error occurred"),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        
         
     }
     
 }
-
-
-
-
 
 
 struct CategoriesListView_Previews: PreviewProvider {

@@ -57,7 +57,7 @@ struct CartView: View {
                 .padding(.vertical, 10)
             
         }
-
+        
     }
 }
 
@@ -100,7 +100,7 @@ struct QuantityAdjustmentView: View {
             }
         }
         .padding(.vertical, 4) // Add some vertical padding for tappability
-        .buttonStyle(BorderlessButtonStyle()) // Ensure the button area is limited to its content
+        .buttonStyle(BorderlessButtonStyle()) 
     }
 }
 
