@@ -4,31 +4,35 @@
 //
 //  Created by Douglas Gondim on 10/11/23.
 //
+//  Description: This view displays the user's shopping cart and provides options for adjusting quantities and checking out.
 
 import SwiftUI
 
 struct CartView: View {
-    @ObservedObject var viewModel: CartViewModel
+    @ObservedObject var viewModel: CartViewModel  // ViewModel providing data and logic for the cart
     
     var body: some View {
         
         VStack {
-            if viewModel.isCartEmpty(){
+            // Check if the cart is empty and display message if it is
+            if viewModel.isCartEmpty() {
                 Spacer()
                 Text("Your cart is empty.")
                     .font(.headline)
                     .padding()
                 Spacer()
-            }else{
-                
+            } else {
+                // Display list of cart items
                 List {
-                    Section(header: Color.clear.frame(height:0)) {
+                    Section(header: Color.clear.frame(height: 0)) {
                         ForEach(viewModel.cartItems) { item in
                             HStack {
+                                // Item image
                                 AsyncImage(url: URL(string: item.product.productThumbnail))
                                     .frame(width: 50, height: 50)
                                     .clipShape(RoundedRectangle(cornerRadius: 8))
                                 
+                                // Item details
                                 VStack(alignment: .leading) {
                                     Text(item.product.productName)
                                         .font(.headline)
@@ -37,13 +41,12 @@ struct CartView: View {
                                         .frame(minWidth: 85, alignment: .leading)
                                         .monospaced()
                                         .padding(.top, 1)
-                                    
                                 }
                                 .frame(width: 100)
                                 
-                                
                                 Spacer()
                                 
+                                // Quantity adjustment view
                                 QuantityAdjustmentView(viewModel: viewModel, item: item)
                             }
                         }
@@ -51,31 +54,30 @@ struct CartView: View {
                 }
             }
             
-            
+            // Total and checkout view
             TotalAndCheckoutView(viewModel: viewModel)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
-            
         }
         .navigationDestination(isPresented: $viewModel.isNavigationActive) {
-
+            // Navigate to payment view on checkout
             PaymentView(viewModel: PaymentViewModel(apiService: APIService(), cartViewModel: viewModel))
-            
         }
-        .onAppear(){
+        .onAppear() {
+            // Hide payment view on appearance
             viewModel.hidePaymentView()
         }
-        
     }
 }
 
+// Component for adjusting item quantity in the cart
 struct QuantityAdjustmentView: View {
     @ObservedObject var viewModel: CartViewModel
-    let item: CartItem
+    let item: CartItem  // The specific cart item
     
     var body: some View {
         HStack {
-            // Minus Button
+            // Decrease quantity button
             Spacer()
             Button(action: { viewModel.decreaseQuantity(of: item) }) {
                 Image(systemName: "minus.circle.fill")
@@ -83,7 +85,7 @@ struct QuantityAdjustmentView: View {
             }
             .padding(.trailing, 8)
             
-            // Quantity Text
+            // Display item quantity
             Text("\(item.quantity)")
                 .frame(minWidth: 36)
                 .padding(.horizontal, 4)
@@ -91,7 +93,7 @@ struct QuantityAdjustmentView: View {
                 .cornerRadius(4)
                 .monospaced()
             
-            // Plus Button
+            // Increase quantity button
             Button(action: { viewModel.increaseQuantity(of: item) }) {
                 Image(systemName: "plus.circle.fill")
                     .foregroundColor(.green)
@@ -101,15 +103,16 @@ struct QuantityAdjustmentView: View {
             Spacer()
             Spacer()
             
-            // Delete Button
+            // Delete item button
             Button(action: { viewModel.deleteItem(item) }) {
                 Image(systemName: "trash.fill")
                     .foregroundColor(.red)
             }
         }
-        .padding(.vertical, 4) // Add some vertical padding for tappability
-        .buttonStyle(BorderlessButtonStyle()) 
-        .onAppear(){
+        .padding(.vertical, 4)
+        .buttonStyle(BorderlessButtonStyle())
+        .onAppear() {
+            // Reset cart if it has been paid for
             if viewModel.cartHasBeenPaidFor {
                 viewModel.resetCart()
             }
@@ -117,18 +120,18 @@ struct QuantityAdjustmentView: View {
     }
 }
 
-
+// Component for displaying total amount and checkout button
 struct TotalAndCheckoutView: View {
     @ObservedObject var viewModel: CartViewModel
     
     var body: some View {
         HStack {
-            // Total Price
-            VStack(alignment: .leading){
+            // Display total price
+            VStack(alignment: .leading) {
                 Text("Total:")
                     .font(.title2)
                     .fontWeight(.semibold)
-                Text("$\(viewModel.total , specifier: "%.2f")")
+                Text("$\(viewModel.total, specifier: "%.2f")")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .monospaced()
@@ -137,9 +140,8 @@ struct TotalAndCheckoutView: View {
             
             Spacer()
             
-            // Checkout Button
+            // Checkout button
             Button(action: {
-                print("clicked")
                 viewModel.showPaymentView()
             }) {
                 Text("Checkout")
@@ -150,26 +152,20 @@ struct TotalAndCheckoutView: View {
                     .background(viewModel.isCartEmpty() ? Color.gray : Color.blue)
                     .cornerRadius(8)
                     .shadow(radius: 3)
-                
             }
             .opacity(viewModel.isCartEmpty() ? 0.5 : 1)
-            .disabled(viewModel.isCartEmpty() ? true : false)
-       
-        
+            .disabled(viewModel.isCartEmpty())
         }
         .padding()
         .background(Color(UIColor.secondarySystemBackground))
         .cornerRadius(10)
         .shadow(radius: 5)
-        
     }
 }
 
-
-
+// Preview provider for CartView
 struct CartView_Previews: PreviewProvider {
     static var previews: some View {
         CartView(viewModel: CartViewModel(apiService: APIService()))
     }
 }
-

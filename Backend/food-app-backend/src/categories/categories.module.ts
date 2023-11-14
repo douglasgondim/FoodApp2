@@ -6,8 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './category.entity';
 import { ProductsModule } from 'src/products/products.module';
 
-
-
 @Module({
   imports: [HttpModule, TypeOrmModule.forFeature([Category]), ProductsModule],
   controllers: [CategoriesController],

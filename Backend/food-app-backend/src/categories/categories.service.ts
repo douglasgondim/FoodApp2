@@ -1,4 +1,4 @@
-import { Injectable, Logger, HttpException, HttpStatus, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, HttpException, HttpStatus, OnModuleInit, InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -106,5 +106,20 @@ export class CategoriesService {
         const count = await this.categoryRepository.count();
         return count > 0;
     }
+
+    // Delete all categories from database
+    async deleteAllCategories(): Promise<void> {
+        try {
+          // Delete all categories
+          await this.categoryRepository.createQueryBuilder()
+            .delete()
+            .from(Category)
+            .execute();
+        } catch (error) {
+          this.logger.error('Failed to delete categories', error.stack);
+          throw new InternalServerErrorException('Failed to delete categories');
+        }
+      }
+    
 
 }

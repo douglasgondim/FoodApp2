@@ -4,38 +4,49 @@
 //
 //  Created by Douglas Gondim on 12/11/23.
 //
+//  Description: This file contains the PaymentViewModel class which handles the logic
+//  for processing payments within the app. It integrates with external services,
+//  manages payment methods, and handles UI updates based on payment processing state.
 
 import SwiftUI
 import Combine
 import Stripe
 import StripePaymentSheet
 
+// The PaymentViewModel class is responsible for handling payment logic in the app.
+// It keeps track of the current payment method, payment status, and integrates with the Stripe SDK.
 class PaymentViewModel: ObservableObject {
-    var apiService : APIService
-    var cartViewModel : CartViewModel
+    var apiService: APIService          // Service for making API calls.
+    var cartViewModel: CartViewModel    // ViewModel for the shopping cart.
     
-    @Published var currentPaymentMethod: PaymentType
-    @Published var isPayButtonEnabled: Bool = false
-    @ObservedObject var creditCardViewModel : CreditCardViewModel
+    // Observable properties to update the view in real-time.
+    @Published var currentPaymentMethod: PaymentType // The current selected payment method.
+    @Published var isPayButtonEnabled: Bool = false  // Controls the 'Pay' button enabled state.
+    @ObservedObject var creditCardViewModel: CreditCardViewModel // ViewModel for credit card information.
     
+    // Properties for alert presentation.
     @Published var showAlert = false
     @Published var alertMessage = ""
+    
+    // Loading state to show activity indicator during payment processing.
     @Published var isLoading = false
     
+    // Subscription set for Combine publishers.
     private var cancellables = Set<AnyCancellable>()
     
-    
-    init(apiService : APIService, cartViewModel: CartViewModel){
+    // Initialization with required services and default settings.
+    init(apiService: APIService, cartViewModel: CartViewModel) {
         self.apiService = apiService
         self.cartViewModel = cartViewModel
         currentPaymentMethod = .creditCard
         creditCardViewModel = CreditCardViewModel(apiService: apiService, creditCard: CreditCard(cardNumber: "", expirationDate: "", cvv: ""))
         setupSubscriptions()
         
-//        creditCardViewModel.stubCreditCardAutoFill() // REMOVE
+        // Pre-fill valid credit card information for testing purposes (remove for production).
+       // creditCardViewModel.stubCreditCardAutoFill()
     }
     
-    
+    // Sets up subscriptions to listen to changes in the credit card view model.
     private func setupSubscriptions() {
         creditCardViewModel.$isPaymentMethodInfoComplete
             .receive(on: RunLoop.main)
@@ -45,7 +56,8 @@ class PaymentViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func proccessPayment(cartItems : [CartItem]) async -> Result<String, PurchaseError>{
+    // Processes the payment based on the current payment method.
+    func proccessPayment(cartItems: [CartItem]) async -> Result<String, PurchaseError> {
         switch currentPaymentMethod {
         case .creditCard:
             isLoading = true
@@ -62,14 +74,11 @@ class PaymentViewModel: ObservableObject {
             }
             showAlert = true
             isPayButtonEnabled = true
-          
-            return response
-        case.applePlay:
-            return .failure(.processingFailed("Payments with Apple Pay are not supported yet."))
             
+            return response
+        case .applePay:
+            // Placeholder for Apple Pay implementation.
+            return .failure(.processingFailed("Payments with Apple Pay are not supported yet."))
         }
     }
-    
-    
-    
 }

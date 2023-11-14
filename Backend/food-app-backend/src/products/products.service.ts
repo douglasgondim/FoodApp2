@@ -1,4 +1,4 @@
-import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, Logger, HttpException, HttpStatus, InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { first, map } from 'rxjs/operators';
 import { Category } from '../categories/category.entity';
@@ -50,7 +50,6 @@ export class ProductsService {
             throw new HttpException('Failed to get products for the specified category.', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 
     private assignPriceToProduct(category: string): number {
@@ -141,5 +140,18 @@ export class ProductsService {
 
         return savedProducts;
     }
+
+    async deleteAllProducts(): Promise<void> {
+        try {
+          // Delete all products
+          await this.productRepository.createQueryBuilder()
+            .delete()
+            .from(Product)
+            .execute();
+        } catch (error) {
+          this.logger.error('Failed to delete products', error.stack);
+          throw new InternalServerErrorException('Failed to delete products');
+        }
+      }
 
 }

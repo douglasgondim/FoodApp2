@@ -4,22 +4,29 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseInitializerService } from './databaseInitializer.service';
+import { StripeModule } from './stripe/stripe.module';
+import { PaymentsModule } from './payments/payments.module';
+import { DatabaseService } from './database/database.service';
+import { DatabaseController } from './database/database.controller';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [ProductsModule, CategoriesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'oneseven',
-      password: '654321',
-      database: 'food_db',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT, 10),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true, // Change in production
-    })
+    }),
+    StripeModule,
+    PaymentsModule,
+    DatabaseModule
   ],
-  controllers: [AppController],
-  providers: [AppService, DatabaseInitializerService],
+  controllers: [AppController, DatabaseController],
+  providers: [AppService, DatabaseService],
 })
 export class AppModule {}

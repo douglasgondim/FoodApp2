@@ -4,6 +4,7 @@
 //
 //  Created by Douglas Gondim on 12/11/23.
 //
+//  Description: This struct represents a credit card and conforms to the PaymentMethodProtocol.
 
 import Foundation
 

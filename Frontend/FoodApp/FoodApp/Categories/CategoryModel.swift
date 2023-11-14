@@ -4,6 +4,8 @@
 //
 //  Created by Douglas Gondim on 10/11/23.
 //
+//  Description: This file defines the Category model and the response structure for categories fetched from the API.
+
 
 import Foundation
 

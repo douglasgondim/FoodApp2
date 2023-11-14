@@ -4,24 +4,29 @@
 //
 //  Created by Douglas Gondim on 10/11/23.
 //
+//  Description: This file defines the GeneralCardView struct, a reusable SwiftUI View for
+//  displaying general items like categories and products in card format. It supports interaction
+//  like adding to cart and clicking on the card.
 
 import SwiftUI
 
+// Protocol defining the necessary properties for an item to be displayed in GeneralCardView.
 protocol GeneralItemProtocol: Identifiable {
     var id: Int { get }
     var thumbnail: String { get }
     var title: String { get }
-    
 }
 
+// The view that represents a general item (category or product) as a card.
 struct GeneralCardView: View {
-    let generalItem: any GeneralItemProtocol
-    let onAddToCartClicked: () -> Void
-    let onCardClicked: () -> Void
-    @State private var isTapped: Bool = false
+    let generalItem: any GeneralItemProtocol // The item to be displayed.
+    let onAddToCartClicked: () -> Void // Closure to handle add to cart action.
+    let onCardClicked: () -> Void // Closure to handle card click action.
+    @State private var isTapped: Bool = false // State to manage tap interaction.
     
     var body: some View {
         VStack {
+            // Asynchronous image loading.
             AsyncImage(url: URL(string: generalItem.thumbnail)) { phase in
                 switch phase {
                 case .success(let image):
@@ -32,17 +37,17 @@ struct GeneralCardView: View {
                     
                 case .failure:
                     Image(systemName: "exclamationmark.triangle.fill")
-                                .foregroundColor(.red)
-                                .font(.system(size: 36))
+                        .foregroundColor(.red)
+                        .font(.system(size: 36))
                     
                 default:
-                    ProgressView() // Default view while loading or empty URL
+                    ProgressView() // Shown while loading or for empty URL.
                 }
-                
             }
             .frame(width: 100, height: 100)
             .cornerRadius(8)
             
+            // Title of the item.
             Text(generalItem.title)
                 .font(.headline)
                 .lineLimit(3)
@@ -51,8 +56,7 @@ struct GeneralCardView: View {
                 .frame(height: 70)
                 .foregroundStyle(.foreground)
             
-            
-            
+            // Display product-specific details if the item is a product.
             if let product = generalItem as? Product {
                 Text("$\(product.productPrice, specifier: "%.2f")")
                     .font(.subheadline)
@@ -60,10 +64,8 @@ struct GeneralCardView: View {
                     .frame(height: 20)
                     .padding(.bottom, 5)
                 
-                
-                
-                Button(action: onAddToCartClicked
-                ) {
+                // Add to cart button.
+                Button(action: onAddToCartClicked) {
                     HStack {
                         Image(systemName: "cart.badge.plus")
                             .resizable()
@@ -100,39 +102,35 @@ struct GeneralCardView: View {
                 }
             }
         }
-        
     }
 }
 
-
+// SwiftUI Preview Provider for GeneralCardView.
 struct GeneralCardView_Previews: PreviewProvider {
-    
     static var previews: some View {
         Group{
-            // Category card preview
+            // Category card preview.
             GeneralCardView(generalItem: Category(
-                categoryId: 1,
-                categoryName: "Fruits",
-                categoryThumbnail: "",
-                categoryDescription: ""
+                categoryId: 124,
+                categoryName: "Miscellaneous",
+                categoryThumbnail: "https://www.themealdb.com/images/category/miscellaneous.png",
+                categoryDescription: "General foods that don't fit into another category"
             ),
-                            onAddToCartClicked: {},
-                            onCardClicked: {}
+            onAddToCartClicked: {},
+            onCardClicked: {}
             )
             .previewLayout(.sizeThatFits)
             
-            // Product card preview
+            // Product card preview.
             GeneralCardView(generalItem: Product(
-                productId: 1,
-                productName: "Banana",
-                productThumbnail: "",
+                productId: 2581,
+                productName: "Duck Confit",
+                productThumbnail: "https://www.themealdb.com/images/media/meals/wvpvsu1511786158.jpg",
                 productPrice: 0.99
             ),
-                            
-                            onAddToCartClicked: {},
-                            onCardClicked: {})
+            onAddToCartClicked: {},
+            onCardClicked: {})
             .previewLayout(.sizeThatFits)
-            
         }
     }
 }

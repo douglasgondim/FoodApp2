@@ -14,7 +14,7 @@ struct FoodApp: App {
     let cartViewModel : CartViewModel
     
     init(){
-        STPAPIClient.shared.publishableKey = "pk_test_51OBU7EFQKJ0M0HiOX0I2mdZe49NYB64rFB60IAj3oIUVQziqIGbTeHpzjaK8h5FtoJNxhvx5xqI6gUh2CWDKkPfQ00Lhf7yUEl"
+        STPAPIClient.shared.publishableKey = "YOUR_STRIPE_API_TEST_KEY_HERE"
 
 
         apiService = APIService()
