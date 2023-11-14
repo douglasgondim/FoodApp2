@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F212403D2B02C24100FC2F75 /* Stripe in Frameworks */ = {isa = PBXBuildFile; productRef = F212403C2B02C24100FC2F75 /* Stripe */; };
+		F212403F2B03002E00FC2F75 /* StripePaymentSheet in Frameworks */ = {isa = PBXBuildFile; productRef = F212403E2B03002E00FC2F75 /* StripePaymentSheet */; };
+		F21240412B03A13500FC2F75 /* CreditCardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21240402B03A13500FC2F75 /* CreditCardViewModelTests.swift */; };
 		F21726452B00A74A00D5D9E5 /* CreditCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21726442B00A74A00D5D9E5 /* CreditCardViewModel.swift */; };
 		F21726482B00B2E200D5D9E5 /* CreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21726472B00B2E200D5D9E5 /* CreditCard.swift */; };
 		F217264A2B00B2F600D5D9E5 /* CreditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21726492B00B2F600D5D9E5 /* CreditCardView.swift */; };
@@ -21,8 +24,6 @@
 		F2271B772AFD8527004AD79D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B762AFD8527004AD79D /* ContentView.swift */; };
 		F2271B792AFD8528004AD79D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2271B782AFD8528004AD79D /* Assets.xcassets */; };
 		F2271B7C2AFD8528004AD79D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2271B7B2AFD8528004AD79D /* Preview Assets.xcassets */; };
-		F2271B7E2AFD8528004AD79D /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B7D2AFD8528004AD79D /* Persistence.swift */; };
-		F2271B812AFD8528004AD79D /* FoodApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F2271B7F2AFD8528004AD79D /* FoodApp.xcdatamodeld */; };
 		F2271B8B2AFD8528004AD79D /* FoodAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B8A2AFD8528004AD79D /* FoodAppTests.swift */; };
 		F2271B952AFD8528004AD79D /* FoodAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B942AFD8528004AD79D /* FoodAppUITests.swift */; };
 		F2271B972AFD8528004AD79D /* FoodAppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2271B962AFD8528004AD79D /* FoodAppUITestsLaunchTests.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F21240402B03A13500FC2F75 /* CreditCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardViewModelTests.swift; sourceTree = "<group>"; };
 		F21726442B00A74A00D5D9E5 /* CreditCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardViewModel.swift; sourceTree = "<group>"; };
 		F21726472B00B2E200D5D9E5 /* CreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCard.swift; sourceTree = "<group>"; };
 		F21726492B00B2F600D5D9E5 /* CreditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardView.swift; sourceTree = "<group>"; };
@@ -68,8 +70,6 @@
 		F2271B762AFD8527004AD79D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F2271B782AFD8528004AD79D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F2271B7B2AFD8528004AD79D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		F2271B7D2AFD8528004AD79D /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		F2271B802AFD8528004AD79D /* FoodApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FoodApp.xcdatamodel; sourceTree = "<group>"; };
 		F2271B862AFD8528004AD79D /* FoodAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2271B8A2AFD8528004AD79D /* FoodAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodAppTests.swift; sourceTree = "<group>"; };
 		F2271B902AFD8528004AD79D /* FoodAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +89,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F212403F2B03002E00FC2F75 /* StripePaymentSheet in Frameworks */,
+				F212403D2B02C24100FC2F75 /* Stripe in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,8 +181,6 @@
 				F2271B742AFD8527004AD79D /* FoodApp.swift */,
 				F2271B762AFD8527004AD79D /* ContentView.swift */,
 				F2271B782AFD8528004AD79D /* Assets.xcassets */,
-				F2271B7D2AFD8528004AD79D /* Persistence.swift */,
-				F2271B7F2AFD8528004AD79D /* FoodApp.xcdatamodeld */,
 				F2271B7A2AFD8528004AD79D /* Preview Content */,
 			);
 			path = FoodApp;
@@ -198,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				F2271B8A2AFD8528004AD79D /* FoodAppTests.swift */,
+				F21240402B03A13500FC2F75 /* CreditCardViewModelTests.swift */,
 			);
 			path = FoodAppTests;
 			sourceTree = "<group>";
@@ -248,6 +249,10 @@
 			dependencies = (
 			);
 			name = FoodApp;
+			packageProductDependencies = (
+				F212403C2B02C24100FC2F75 /* Stripe */,
+				F212403E2B03002E00FC2F75 /* StripePaymentSheet */,
+			);
 			productName = FoodApp;
 			productReference = F2271B712AFD8527004AD79D /* FoodApp.app */;
 			productType = "com.apple.product-type.application";
@@ -367,8 +372,6 @@
 			files = (
 				F21B6FE12AFE409A0070831E /* CategoryModel.swift in Sources */,
 				F2271BAB2AFD89D4004AD79D /* ProductsListView.swift in Sources */,
-				F2271B7E2AFD8528004AD79D /* Persistence.swift in Sources */,
-				F2271B812AFD8528004AD79D /* FoodApp.xcdatamodeld in Sources */,
 				F2271B772AFD8527004AD79D /* ContentView.swift in Sources */,
 				F29E116D2B0082B000C6EB42 /* PaymentView.swift in Sources */,
 				F21726482B00B2E200D5D9E5 /* CreditCard.swift in Sources */,
@@ -394,6 +397,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2271B8B2AFD8528004AD79D /* FoodAppTests.swift in Sources */,
+				F21240412B03A13500FC2F75 /* CreditCardViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,18 +731,18 @@
 		};
 /* End XCRemoteSwiftPackageReference section */
 
-/* Begin XCVersionGroup section */
-		F2271B7F2AFD8528004AD79D /* FoodApp.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				F2271B802AFD8528004AD79D /* FoodApp.xcdatamodel */,
-			);
-			currentVersion = F2271B802AFD8528004AD79D /* FoodApp.xcdatamodel */;
-			path = FoodApp.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
+/* Begin XCSwiftPackageProductDependency section */
+		F212403C2B02C24100FC2F75 /* Stripe */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F29E116A2B00810800C6EB42 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = Stripe;
 		};
-/* End XCVersionGroup section */
+		F212403E2B03002E00FC2F75 /* StripePaymentSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F29E116A2B00810800C6EB42 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
+			productName = StripePaymentSheet;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F2271B692AFD8526004AD79D /* Project object */;
 }

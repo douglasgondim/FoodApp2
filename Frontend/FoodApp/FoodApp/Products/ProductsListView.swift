@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ProductsListView: View {
     @ObservedObject var viewModel: ProductsListViewModel
+
     
     init(viewModel : ProductsListViewModel) {
         self.viewModel = viewModel
@@ -101,7 +102,6 @@ struct ProductsListView_Previews: PreviewProvider {
                                                 categoryDescription: ""
                                              )))
         .previewLayout(.sizeThatFits)
-        //.padding()
     }
 }
 

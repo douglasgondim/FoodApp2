@@ -52,10 +52,18 @@ struct CartView: View {
             }
             
             
-            TotalAndCheckoutView(total: viewModel.total, isCheckoutEnabled: !viewModel.isCartEmpty())
+            TotalAndCheckoutView(viewModel: viewModel)
                 .padding(.horizontal)
                 .padding(.vertical, 10)
             
+        }
+        .navigationDestination(isPresented: $viewModel.isNavigationActive) {
+
+            PaymentView(viewModel: PaymentViewModel(apiService: APIService(), cartViewModel: viewModel))
+            
+        }
+        .onAppear(){
+            viewModel.hidePaymentView()
         }
         
     }
@@ -101,13 +109,17 @@ struct QuantityAdjustmentView: View {
         }
         .padding(.vertical, 4) // Add some vertical padding for tappability
         .buttonStyle(BorderlessButtonStyle()) 
+        .onAppear(){
+            if viewModel.cartHasBeenPaidFor {
+                viewModel.resetCart()
+            }
+        }
     }
 }
 
 
 struct TotalAndCheckoutView: View {
-    let total: Double
-    let isCheckoutEnabled : Bool
+    @ObservedObject var viewModel: CartViewModel
     
     var body: some View {
         HStack {
@@ -116,7 +128,7 @@ struct TotalAndCheckoutView: View {
                 Text("Total:")
                     .font(.title2)
                     .fontWeight(.semibold)
-                Text("$\(total, specifier: "%.2f")")
+                Text("$\(viewModel.total , specifier: "%.2f")")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .monospaced()
@@ -127,19 +139,23 @@ struct TotalAndCheckoutView: View {
             
             // Checkout Button
             Button(action: {
-                
+                print("clicked")
+                viewModel.showPaymentView()
             }) {
                 Text("Checkout")
                     .font(.headline)
                     .foregroundColor(.white)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
-                    .background(isCheckoutEnabled ? Color.blue : Color.gray)
+                    .background(viewModel.isCartEmpty() ? Color.gray : Color.blue)
                     .cornerRadius(8)
                     .shadow(radius: 3)
+                
             }
-            .disabled(true)
-            .opacity(isCheckoutEnabled ? 1 : 0.5)
+            .opacity(viewModel.isCartEmpty() ? 0.5 : 1)
+            .disabled(viewModel.isCartEmpty() ? true : false)
+       
+        
         }
         .padding()
         .background(Color(UIColor.secondarySystemBackground))

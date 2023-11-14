@@ -23,16 +23,22 @@ struct GeneralCardView: View {
     var body: some View {
         VStack {
             AsyncImage(url: URL(string: generalItem.thumbnail)) { phase in
-                if let image = phase.image {
+                switch phase {
+                case .success(let image):
                     image.resizable()
                         .scaledToFit()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .clipped()
-                } else if phase.error != nil {
-                    Color.red
-                } else {
-                    ProgressView()
+                    
+                case .failure:
+                    Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundColor(.red)
+                                .font(.system(size: 36))
+                    
+                default:
+                    ProgressView() // Default view while loading or empty URL
                 }
+                
             }
             .frame(width: 100, height: 100)
             .cornerRadius(8)
@@ -83,13 +89,12 @@ struct GeneralCardView: View {
         .background(Color("GeneralCardBackground"))
         .cornerRadius(10)
         .shadow(radius: 5)
-
+        
         .opacity(isTapped ? 0.5 : 1.0)
         .onTapGesture {
             if(generalItem as? Category != nil){
                 isTapped = true
                 onCardClicked()
-                // Reset the opacity after a delay
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     isTapped = false
                 }

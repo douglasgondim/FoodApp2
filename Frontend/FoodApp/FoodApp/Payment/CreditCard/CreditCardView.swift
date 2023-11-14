@@ -10,56 +10,39 @@ import SwiftUI
 struct CreditCardView: View {
     @ObservedObject var viewModel : CreditCardViewModel
     
-    
     var body: some View {
         Form {
             Section(header: Text("Card Details")) {
-                TextField("Card Number", text: $viewModel.creditCard.cardNumber)
+                TextField("Card Number", text: $viewModel.paymentMethod.cardNumber)
                     .keyboardType(.numberPad)
-                    .onChange(of: viewModel.creditCard.cardNumber) { oldValue , newValue in
-                        viewModel.formatCreditCardNumber(oldValue)
-                        
+                    .onChange(of: viewModel.paymentMethod.cardNumber) { oldValue , newValue in
+                        viewModel.formatCreditCardNumber(newValue)
+
+                    }
+
+                TextField("Expiration Date (MM/YY)", text: $viewModel.paymentMethod.expirationDate)
+                    .keyboardType(.numberPad)
+                    .onChange(of: viewModel.paymentMethod.expirationDate){ oldValue, newValue in
+                        viewModel.formatedExpirationDate(newValue)
+
                     }
                 
-                
-                TextField("Expiry Date (MM/YY)", text: $viewModel.creditCard.expirationDate)
+                TextField("CVV", text: $viewModel.paymentMethod.cvv)
                     .keyboardType(.numberPad)
-                    .onChange(of: viewModel.creditCard.expirationDate){ oldValue, newValue in
-                        viewModel.formatedExpirationDate(oldValue)
-                        
-                    }
-                
-                TextField("CVV", text: $viewModel.creditCard.cvv)
-                    .keyboardType(.numberPad)
-                    .onChange(of: viewModel.creditCard.cvv){ oldValue, newValue in
-                        viewModel.formattedCvv(oldValue)
+                    .onChange(of: viewModel.paymentMethod.cvv){ oldValue, newValue in
+                        viewModel.formattedCvv(newValue)
                     }
                 
             }
             
-            //            Section(header: Text("Billing Information")) {
-            //                TextField("Card Holder Name", text: $viewModel.paymentData.cardHolderName)
-            //            }
-            
-            Section {
-                Button("Pay") {
-                    viewModel.processPayment()
-                }
-                .frame(maxWidth: .infinity)
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(8)
-            }
         }
-        //.navigationBarTitle("Payment", displayMode: .inline)
     }
 }
 
 
 struct CreditCardView_Previews: PreviewProvider {
     static var previews: some View {
-        CreditCardView(viewModel: CreditCardViewModel())
+        CreditCardView(viewModel: CreditCardViewModel(apiService: APIService(), creditCard: CreditCard(cardNumber: "", expirationDate: "", cvv: "")))
         
     }
 }

@@ -7,10 +7,12 @@
 
 import Foundation
 
-struct CreditCard : PaymentMethod {
-    var type: PaymentType
+struct CreditCard : PaymentMethodProtocol {
+    let type: PaymentType = .creditCard
     var cardNumber: String
     var expirationDate: String
     var cvv: String
+
+  
 }
 

@@ -16,6 +16,8 @@ class CartViewModel: ObservableObject {
         }
     }
     @AppStorage("cartItems") var itemsData: Data = Data()
+    @Published var isNavigationActive: Bool = false
+    var cartHasBeenPaidFor = false
     
     private var apiService : APIService
     
@@ -24,6 +26,13 @@ class CartViewModel: ObservableObject {
         loadItems()
     }
     
+    func showPaymentView(){
+        isNavigationActive = true
+    }
+    
+    func hidePaymentView(){
+        isNavigationActive = false
+    }
        
     private func saveItems() {
         if let encodedData = try? JSONEncoder().encode(cartItems) {
@@ -49,9 +58,8 @@ class CartViewModel: ObservableObject {
     }
     
     var totalItemCount: Int {
-        let a = cartItems.reduce(0) { $0 + $1.quantity }
-        print("count \(a)")
-        return a
+        return cartItems.reduce(0) { $0 + $1.quantity }
+  
     }
     
     func increaseQuantity(of item: CartItem) {
@@ -77,5 +85,10 @@ class CartViewModel: ObservableObject {
             cartItems.append(cartItem)
         }
       
+    }
+    
+    func resetCart(){
+        cartHasBeenPaidFor = false
+        cartItems.removeAll()
     }
 }

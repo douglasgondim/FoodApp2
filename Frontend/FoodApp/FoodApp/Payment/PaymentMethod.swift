@@ -7,12 +7,16 @@
 
 import Foundation
 
-protocol PaymentMethod {
-    var type: PaymentType { get set }
+protocol PaymentMethodProtocol {
+    var type: PaymentType { get }
+    
 }
 
-protocol PaymentProcessor {
-    func processPayment()
+protocol PaymentProcessorProtocol: ObservableObject {
+    associatedtype PaymentMethodType : PaymentMethodProtocol
+    var paymentMethod : PaymentMethodType { get set }
+    var isPaymentMethodInfoComplete : Bool { get }
+    func processPayment(cartItems : [CartItem]) async -> Result<String, PurchaseError>
 
 }
 
@@ -20,5 +24,17 @@ enum PaymentType {
     case creditCard
     case applePlay
 
+}
+
+enum PurchaseError: Error {
+    case processingFailed(String)
+}
+
+struct PurchaseRequest: Codable {
+    let cartItems: [CartItem]
+    let paymentMethodId: String 
+
  
 }
+
+

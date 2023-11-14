@@ -6,15 +6,17 @@
 //
 
 import SwiftUI
+import Stripe
 
 @main
 struct FoodApp: App {
-    let persistenceController : PersistenceController
     let apiService : APIService
     let cartViewModel : CartViewModel
     
     init(){
-        persistenceController = PersistenceController.shared
+        STPAPIClient.shared.publishableKey = "pk_test_51OBU7EFQKJ0M0HiOX0I2mdZe49NYB64rFB60IAj3oIUVQziqIGbTeHpzjaK8h5FtoJNxhvx5xqI6gUh2CWDKkPfQ00Lhf7yUEl"
+
+
         apiService = APIService()
         cartViewModel = CartViewModel(apiService: apiService)
     }
@@ -23,8 +25,9 @@ struct FoodApp: App {
     var body: some Scene {
         WindowGroup {
                 ContentView(apiService: apiService, cartViewModel: cartViewModel)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+
          
         }
     }
 }
+
