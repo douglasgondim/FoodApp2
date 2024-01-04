@@ -1,4 +1,5 @@
 # FoodApp (iOS and Backend)
+|| This app was made wihin 7 days as part of a technical interview for a mobile fullstack position at a tech company ||
 
 FoodApp is a modern, SwiftUI-based iOS application paired with a robust NestJS backend, offering a seamless food ordering experience. This project showcases cutting-edge features and best practices in full-stack development.
 
